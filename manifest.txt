@@ -1,0 +1,35 @@
+# Manifeste local du dépôt Tauri — historique des publications.
+#
+# Ce répertoire Depot/ contient uniquement les MÉTADONNÉES (structure miroir
+# du futur dépôt GitHub jmkerdal/Tauri_depot). Les exécutables eux-mêmes
+# restent dans out/ et ne sont JAMAIS dupliqués ici.
+#
+# IMPORTANT : ce manifest.txt ne liste QUE les versions effectivement
+# publiées sur GitHub. Les rebuilds intermédiaires en dev (qui changent le
+# hash mais ne sont pas pushés) ne génèrent AUCUNE entrée. La publication
+# est manuelle et par binaire — chaque binaire avance à son rythme.
+#
+# Mapping out/ → Depot/ :
+#   out/kernel.elf                          → kernel/v<N>/
+#   out/compile/utilisateur/<prog>          → user/<prog>/v<N>/
+#
+# Format manifest.txt (une entrée par ligne, séparateur tab) :
+#   <nom>  v<N>  <hash_hex>  <timestamp_unix>  [<signature_b64>]
+#
+# <nom> :
+#   kernel              pour le noyau
+#   user/<prog>         pour un programme user (ex: user/php)
+#
+# <hash_hex> = SHA-256 hex (64 caractères) de l'ELF normalisé :
+#   sections {.text, .rodata, .data} concaténées dans l'ordre,
+#   sans .note.gnu.build-id, .comment, .debug_* → indépendant des
+#   timestamps et chemins de build, ne change que si le code change.
+#
+# <signature_b64> = signature Ed25519 sur la ligne (clé offline).
+#
+# Workflow outil de publication (à écrire) :
+#   depot publish <nom>      → si hash de out/<nom> diffère de la dernière
+#                              entrée → bump v<N+1>, signe, push GitHub,
+#                              append ici. Sinon no-op.
+#   depot status             → liste ce qui diffère de out/ sans rien publier.
+kernel	v1	8400758d74e81b0774695fb224352dd4c03282376a32a161bc48060c5f18d486e210070a8581360b2201a9c99d7eb4893dacb60fed66a95251c3764a737b776b	1778586870
