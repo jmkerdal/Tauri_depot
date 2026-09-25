@@ -44,3 +44,5 @@
 #                              entrée → bump v<N+1>, signe, push GitHub,
 #                              append ici. Sinon no-op.
 #   depot status             → liste ce qui diffère de out/ sans rien publier.
+kernel	v1	85cd70f0554d71912773f299b9ae78ed2c9f85a8ce4548a5b25ae9584a2d199bd06b8c6b057680761ede7f23dd4a5d5491bf8635477ef12e45fc2ae713c568f9	1790327601	BV8MbQiFcekyKAzhkIqoSn5Ej9z7FDYt+RNYYvrkS4FBERa09TNkF92G4sNyZOaMhnVzz/IH27/9vGFETeWlAg==
+fs	0.3	v1
