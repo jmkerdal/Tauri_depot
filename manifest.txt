@@ -1,0 +1,46 @@
+# Manifeste local du dépôt Tauri — historique des publications.
+#
+# Ce répertoire Depot/ contient uniquement les MÉTADONNÉES (structure miroir
+# du futur dépôt GitHub jmkerdal/Tauri_depot). Les exécutables eux-mêmes
+# restent dans out/ et ne sont JAMAIS dupliqués ici.
+#
+# IMPORTANT : ce manifest.txt ne liste QUE les versions effectivement
+# publiées sur GitHub. Les rebuilds intermédiaires en dev (qui changent le
+# hash mais ne sont pas pushés) ne génèrent AUCUNE entrée. La publication
+# est manuelle et par binaire — chaque binaire avance à son rythme.
+#
+# Mapping out/ → Depot/ :
+#   out/kernel.elf                          → kernel/v<N>/
+#   out/compile/utilisateur/<prog>          → user/<prog>/v<N>/
+#
+# Format manifest.txt (une entrée par ligne, séparateur tab) :
+#   <nom>  <version>  <hash_hex>  <timestamp_unix>  [<signature_b64>]
+#
+# VERSIONS (depuis le 25/09/2026) :
+#   noyau            v<N>            ex. v33
+#   programme user   v<N>.<ordre>    ex. v33.1, v33.2
+#   Le majeur d'un programme est LA VERSION DU NOYAU au moment de sa publication ;
+#   l'ordre s'incremente a chaque publication de CE programme pour CE noyau.
+#   ⭐ Le numero dit donc « pour quel noyau ce binaire a ete construit », et
+#     `update` REFUSE d'installer un programme dont le majeur depasse le noyau
+#     installe. Avant, ce lien n'existait que comme deduction par horodatage.
+#   ⚠ Les entrees anterieures sont en `v<N>` ou N est un compteur PROPRE au
+#     binaire (php etait a v6 quand le noyau etait a v12) : elles ne disent rien
+#     du noyau et ne sont donc PAS soumises a cette contrainte.
+#
+# <nom> :
+#   kernel              pour le noyau
+#   user/<prog>         pour un programme user (ex: user/php)
+#
+# <hash_hex> = SHA-256 hex (64 caractères) de l'ELF normalisé :
+#   sections {.text, .rodata, .data} concaténées dans l'ordre,
+#   sans .note.gnu.build-id, .comment, .debug_* → indépendant des
+#   timestamps et chemins de build, ne change que si le code change.
+#
+# <signature_b64> = signature Ed25519 sur la ligne (clé offline).
+#
+# Workflow outil de publication (à écrire) :
+#   depot publish <nom>      → si hash de out/<nom> diffère de la dernière
+#                              entrée → bump v<N+1>, signe, push GitHub,
+#                              append ici. Sinon no-op.
+#   depot status             → liste ce qui diffère de out/ sans rien publier.
